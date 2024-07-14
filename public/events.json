@@ -1,0 +1,152 @@
+[
+    {
+        "name": "Conferencia de Tecnología",
+        "dateTime": "2024-08-01T09:00:00",
+        "description": "Una conferencia sobre las últimas tendencias en tecnología.",
+        "guests": [
+            "usuario1@example.com",
+            "usuario2@example.com"
+        ],
+        "cost": 49.99,
+        "location": {
+            "latitud": 40.712776,
+            "longitud": -74.005974,
+            "direccion": "123 Calle Principal, Nueva York, NY"
+        }
+    },
+    {
+        "name": "Taller de Marketing Digital",
+        "dateTime": "2024-08-03T10:00:00",
+        "description": "Un taller intensivo sobre estrategias de marketing digital.",
+        "guests": [
+            "usuario3@example.com",
+            "usuario4@example.com"
+        ],
+        "cost": 79.99,
+        "location": {
+            "latitud": 34.052235,
+            "longitud": -118.243683,
+            "direccion": "456 Avenida Central, Los Ángeles, CA"
+        }
+    },
+    {
+        "name": "Seminario de Desarrollo Personal",
+        "dateTime": "2024-08-05T11:00:00",
+        "description": "Un seminario para mejorar habilidades personales y profesionales.",
+        "guests": [
+            "usuario5@example.com",
+            "usuario6@example.com"
+        ],
+        "cost": 39.99,
+        "location": {
+            "latitud": 51.507351,
+            "longitud": -0.127758,
+            "direccion": "789 Calle Oxford, Londres, Reino Unido"
+        }
+    },
+    {
+        "name": "Expo de Startups",
+        "dateTime": "2024-08-07T12:00:00",
+        "description": "Una exposición para conectar startups con inversores.",
+        "guests": [
+            "usuario7@example.com",
+            "usuario8@example.com"
+        ],
+        "cost": 99.99,
+        "location": {
+            "latitud": 37.774929,
+            "longitud": -122.419418,
+            "direccion": "101 Calle Market, San Francisco, CA"
+        }
+    },
+    {
+        "name": "Foro de Educación",
+        "dateTime": "2024-08-09T13:00:00",
+        "description": "Un foro para discutir el futuro de la educación.",
+        "guests": [
+            "usuario9@example.com",
+            "usuario10@example.com"
+        ],
+        "cost": 29.99,
+        "location": {
+            "latitud": 48.856613,
+            "longitud": 2.352222,
+            "direccion": "102 Avenida des Champs-Élysées, París, Francia"
+        }
+    },
+    {
+        "name": "Cumbre de Salud y Bienestar",
+        "dateTime": "2024-08-11T14:00:00",
+        "description": "Una cumbre sobre las últimas investigaciones en salud y bienestar.",
+        "guests": [
+            "usuario11@example.com",
+            "usuario12@example.com"
+        ],
+        "cost": 59.99,
+        "location": {
+            "latitud": 35.689487,
+            "longitud": 139.691711,
+            "direccion": "103 Calle Shibuya, Tokio, Japón"
+        }
+    },
+    {
+        "name": "Simposio de Inteligencia Artificial",
+        "dateTime": "2024-08-13T15:00:00",
+        "description": "Un simposio sobre los avances en inteligencia artificial.",
+        "guests": [
+            "usuario13@example.com",
+            "usuario14@example.com"
+        ],
+        "cost": 89.99,
+        "location": {
+            "latitud": -33.868820,
+            "longitud": 151.209290,
+            "direccion": "104 Calle George, Sídney, Australia"
+        }
+    },
+    {
+        "name": "Jornada de Innovación",
+        "dateTime": "2024-08-15T16:00:00",
+        "description": "Una jornada para presentar innovaciones disruptivas.",
+        "guests": [
+            "usuario15@example.com",
+            "usuario16@example.com"
+        ],
+        "cost": 69.99,
+        "location": {
+            "latitud": 55.755825,
+            "longitud": 37.617298,
+            "direccion": "105 Calle Arbat, Moscú, Rusia"
+        }
+    },
+    {
+        "name": "Congreso de Blockchain",
+        "dateTime": "2024-08-17T17:00:00",
+        "description": "Un congreso sobre la tecnología blockchain y sus aplicaciones.",
+        "guests": [
+            "usuario17@example.com",
+            "usuario18@example.com"
+        ],
+        "cost": 119.99,
+        "location": {
+            "latitud": 40.416775,
+            "longitud": -3.703790,
+            "direccion": "106 Calle Gran Vía, Madrid, España"
+        }
+    },
+    {
+        "name": "Encuentro de Emprendedores",
+        "dateTime": "2024-08-19T18:00:00",
+        "description": "Un encuentro para emprendedores y empresarios.",
+        "guests": [
+            "usuario19@example.com",
+            "usuario20@example.com"
+        ],
+        "cost": 49.99,
+        "location": {
+            "latitud": 52.520008,
+            "longitud": 13.404954,
+            "direccion": "107 Calle Friedrich, Berlín, Alemania"
+        }
+    }
+]

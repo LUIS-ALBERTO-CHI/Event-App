@@ -7,9 +7,13 @@ import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import HomePage from './components/HomePage.vue';
+import LoginPage from './components/LoginPage.vue';
+import RegisterPage from './components/RegisterPage.vue';
 
 const routes = [
-  { path: '/', component: HomePage }
+  { path: '/', component: HomePage },
+  { path: '/register', component: RegisterPage },
+  { path: '/login', component: LoginPage },
 ];
 
 const router = createRouter({
