@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderComponent :isLoggedIn="isLoggedIn" :username="username" @logout="handleLogout" style="width: 100%;"/>
+    <HeaderComponent :isLoggedIn="isLoggedIn" :username="username" :userRole="userRole" @logout="handleLogout" style="width: 100%;"/>
     <router-view @login-success="handleLogin"></router-view>
   </div>
 </template>
@@ -16,7 +16,8 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      username: ''
+      username: '',
+      userRole: null
     };
   },
   methods: {
@@ -33,6 +34,7 @@ export default {
 
       this.isLoggedIn = true;
       this.username = user.firstName;
+      this.userRole = user.role.id;
 
     } catch (error) {
       console.error('Error accessing user data:', error);
@@ -50,6 +52,7 @@ export default {
           const payloadBase64 = token.split('.')[1];
           const decodedPayload = JSON.parse(atob(payloadBase64));
           this.isLoggedIn = true;
+          console.log('User logged in', decodedPayload);
           this.username = decodedPayload.name;
         } catch (error) {
           console.error('Invalid token', error);

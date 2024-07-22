@@ -5,8 +5,8 @@
                 <router-link to="/">
                     <img src="../assets/logo.png" alt="" style="width: 50px;"/>
                 </router-link>
-                <router-link to="/createEvent">
-                    <Button label="Crear evento" text plain />
+                <router-link to="/createEvent" v-if="isAdmin">
+                    <Button label="Crear evento" text plain/>
                 </router-link>
                 <router-link to="/eventSchedule">
                     <Button label="Calendario" text plain />
@@ -44,12 +44,18 @@ export default {
     },
     props: {
         isLoggedIn: Boolean,
-        username: String
+        username: String,
+        userRole: String
     },
     methods: {
         handleLogout() {
             localStorage.removeItem('accessToken');
             this.$emit('logout');
+        }
+    }, 
+    computed: {
+        isAdmin() {
+            return this.userRole == 2 ? true : false;
         }
     }
 };
