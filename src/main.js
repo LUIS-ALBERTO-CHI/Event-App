@@ -12,11 +12,13 @@ import RegisterPage from './components/RegisterPage.vue';
 import CreateEvent from './components/EventsCreatePage.vue';
 import EventsTable from './components/EventsTable.vue';
 import Vue3Geolocation from 'vue3-geolocation'
+import EventSchedule from './components/EventSchedule.vue';
 
 const routes = [
   { path: '/', component: HomePage },
   { path: '/register', component: RegisterPage },
   { path: '/events', component: EventsTable },
+  { path: '/eventSchedule', component: EventSchedule },
   { path: '/createEvent', component: CreateEvent },
   { path: '/login', component: LoginPage },
 ];

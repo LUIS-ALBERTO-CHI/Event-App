@@ -8,7 +8,9 @@
                 <router-link to="/createEvent">
                     <Button label="Crear evento" text plain />
                 </router-link>
-                <Button label="Calendario" text plain />
+                <router-link to="/eventSchedule">
+                    <Button label="Calendario" text plain />
+                </router-link>
                 <router-link to="/events">
                     <Button label="Eventos" text plain />
                 </router-link>
