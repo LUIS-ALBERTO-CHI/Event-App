@@ -4,7 +4,7 @@
             <section class="events">
                 <h2 class="p-text-center">Próximos Eventos</h2>
                 <div class="event-list">
-                    <Card v-for="event in events" :key="event.id" style="width: 300px; box-shadow: 0 2px 4px rgb(0, 0, 0, 0.6);">
+                    <Card v-for="event in events" :key="event.id" style="width: 300px; box-shadow: 0 2px 4px rgb(0, 0, 0, 0.6);" @click="openModal(event.id)">
                         <template #title>
                             <h3>{{ event.name }}</h3>
                         </template>
@@ -18,6 +18,8 @@
                 </div>
             </section>
         </main>
+
+        <RegisterToEvent :show="showModal" :eventId="selectedEventId" @close="showModal = false"/>
     </div>
 </template>
 
@@ -25,14 +27,18 @@
 
 import Card from 'primevue/card';
 import axios from 'axios'
+import RegisterToEvent from './RegisterToEvent.vue';
 
 export default {
     components: {
-        Card
+        Card,
+        RegisterToEvent
     },
     data() {
         return {
-            events: []
+            events: [],
+            showModal: false,
+            selectedEventId: null
         };
     },
     created() {
@@ -75,8 +81,13 @@ export default {
         } catch (error) {
             console.error('Error fetching all events:', error);
         }
+    },
+    openModal(eventId) {
+        this.selectedEventId = eventId;
+        this.showModal = true;
     }
     }
+    
 };
 </script>
 
