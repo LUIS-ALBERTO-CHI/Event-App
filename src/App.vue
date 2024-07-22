@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderComponent :isLoggedIn="isLoggedIn" :username="username" @logout="handleLogout" />
+    <HeaderComponent :isLoggedIn="isLoggedIn" :username="username" @logout="handleLogout" style="width: 100%;"/>
     <router-view @login-success="handleLogin"></router-view>
   </div>
 </template>
@@ -21,26 +21,23 @@ export default {
   },
   methods: {
     handleLogin(token) {
-      console.log('User logged in', token);
+    console.log('User logged in', token);
 
-      if (!token) {
-        console.error('Invalid token received:', token);
-        return;
-      }
+    if (!token) {
+      console.error('Invalid token received:', token);
+      return;
+    }
 
-      try {
-        const payloadBase64 = token.split('.')[1];
-        const decodedPayload = JSON.parse(atob(payloadBase64));
-        console.log('Decoded token:', decodedPayload);
+    try {
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-        localStorage.setItem('accessToken', token);
+      this.isLoggedIn = true;
+      this.username = user.firstName;
 
-        this.isLoggedIn = true;
-        this.username = decodedPayload.name;
-      } catch (error) {
-        console.error('Error decoding or storing token:', error);
-      }
-    },
+    } catch (error) {
+      console.error('Error accessing user data:', error);
+    }
+  },
     handleLogout() {
       localStorage.removeItem('accessToken');
       this.isLoggedIn = false;
@@ -76,9 +73,7 @@ export default {
   text-align: center;
   font-size: 14px;
   height: 100%;
-  background: linear-gradient(to bottom right, #007AFF, #00A3E3);
-  position: relative;
-  overflow: hidden;
+  background: #f5f5f7;
 }
 
 #app::before, #app::after {
@@ -92,8 +87,6 @@ export default {
 #app::before {
   width: 200px;
   height: 200px;
-  top: 20%;
-  left: 10%;
 }
 
 #app::after {

@@ -12,9 +12,9 @@
           <input type="password" id="password" v-model="password" required placeholder="Contraseña"/>
         </div>
         <button type="submit">Log In</button>
-        <div class="button">
-          <router-link to="/register" class="register">Register</router-link>
-        </div>
+          <router-link to="/register">
+            <Button label="Registrarse" text plain/>
+          </router-link>
       </form>
       <div v-if="error" class="error">{{ error }}</div>
     </div>
@@ -23,9 +23,13 @@
 
 <script>
 import axios from 'axios';
+import Button from 'primevue/button';
 
 export default {
   name: 'LoginPage',
+  components: {
+    Button
+  },
   data() {
     return {
       email: '',
@@ -35,26 +39,32 @@ export default {
   },
   methods: {
     async login() {
-      try {
-        const response = await axios.post('http://localhost:5000/api/user/login', {
-          mail: this.email,
-          password: this.password
-        });
-        const token = response.data.accessToken;
-        console.log('Login successful', token);
-        this.$emit('login-success', token);
-        this.$router.push('/');
-      } catch (err) {
-        this.error = 'Login failed. Please check your credentials and try again.';
-      }
+    try {
+      const response = await axios.post('http://localhost:3000/api/login', {
+        email: this.email,
+        password: this.password
+      });
+
+      const token = response.data.jwt;
+      const user = response.data.user;
+
+      console.log('Login successful', token);
+      localStorage.setItem('accessToken', token);
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+      this.$emit('login-success', token);
+      this.$router.push('/');
+    } catch (err) {
+      this.error = 'Login failed. Please check your credentials and try again.';
     }
+  }
   }
 };
 </script>
 
 <style scoped>
 *{
-    margin: 0;
+    margin: 20px;
     padding: 0;
     font-family: sans-serif;
 }
@@ -62,19 +72,19 @@ export default {
 .container{
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100vh;
-    background-color: #ccc;
+    background-color: #f5f5f7;
 }
 
 .box{
     width: 55%;
     height: 66vh;
-    background-color: #fff;
+    background-color: #f9fafb;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .logo{

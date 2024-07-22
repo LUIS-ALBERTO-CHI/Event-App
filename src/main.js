@@ -9,10 +9,14 @@ import 'primeflex/primeflex.css';
 import HomePage from './components/HomePage.vue';
 import LoginPage from './components/LoginPage.vue';
 import RegisterPage from './components/RegisterPage.vue';
+import CreateEvent from './components/EventsCreatePage.vue';
+import EventsTable from './components/EventsTable.vue';
 
 const routes = [
   { path: '/', component: HomePage },
   { path: '/register', component: RegisterPage },
+  { path: '/events', component: EventsTable },
+  { path: '/createEvent', component: CreateEvent },
   { path: '/login', component: LoginPage },
 ];
 
