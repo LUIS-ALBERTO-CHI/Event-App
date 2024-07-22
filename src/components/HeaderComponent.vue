@@ -2,7 +2,9 @@
     <Toolbar style="border-radius: 3rem; padding: 1rem 1rem 1rem 1.5rem; height: auto; box-shadow: 0 2px 4px rgb(0, 0, 0, 0.4);">
         <template #start>
             <div class="flex align-items-center gap-2">
-                <img src="../assets/logo.png" alt="" style="width: 50px;">
+                <router-link to="/">
+                    <img src="../assets/logo.png" alt="" style="width: 50px;"/>
+                </router-link>
                 <router-link to="/createEvent">
                     <Button label="Crear evento" text plain />
                 </router-link>

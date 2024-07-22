@@ -1,25 +1,35 @@
 <template>
-    <div v-if="show" class="modal-overlay">
-      <div class="modal">
-          <div class="modal-content">
+  <div v-if="show" class="modal-overlay" @click="close">
+      <div class="modal" @click.stop>
+          <div class="modal-header">
               <h3>{{ eventDetails.name }}</h3>
-              <p> {{ eventDetails.description }}</p>
-              <!-- <p>{{ formatDate(eventDetails.datetime) }}</p> -->
-              <!-- <p>Costo: {{ eventDetails.cost }}</p> -->
-              <p>Invitado especial: {{ eventDetails.guest ?  eventDetails.guest.name: 'No disponible' }}</p>
-              <p>Usuarios registrados: {{ eventDetails.registeredCount }}</p>
-              <button @click="registerToEvent">Registrarse al evento</button>
-              <button @click="close">Cerrar</button>
-        </div>
+          </div>
+          <div class="modal-content">
+              <p><i class="pi pi-info-circle p-mr-2"></i>{{ eventDetails.description }}</p>
+              <p><i class="pi pi-star p-mr-2"></i><strong>Invitado especial:</strong> {{ eventDetails.guest ? eventDetails.guest.name : 'No disponible' }}</p>
+              <p><i class="pi pi-users p-mr-2"></i><strong>Usuarios registrados:</strong> {{ eventDetails.registeredCount }}</p>
+              <div class="modal-buttons">
+                  <Button @click="registerToEvent" class="p-button p-component p-button-primary">
+                      <i class="pi pi-calendar-plus"></i> Registrarse al evento
+                  </Button>
+                  <Button @click="close" class="p-button p-component p-button-secondary">
+                      <i class="pi pi-times"></i> Cerrar
+                  </Button>
+              </div>
+          </div>
       </div>
-    </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import axios from 'axios';
   import { jwtDecode } from 'jwt-decode';
-  
+  import Button from 'primevue/button';
+
   export default {
+    components: {
+      Button
+    },
     props: ['show', 'eventId'],
     data() {
       return {
@@ -83,71 +93,77 @@
   
   <style>
 
-  .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Asegúrate de que el modal esté por encima de otros elementos */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
 .modal {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
-  width: 100%;
-  animation: fadeIn 0.3s ease-in-out;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 500px;
+    padding: 2rem;
+    position: relative;
 }
 
 .modal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.modal-content h3 {
-  margin-bottom: 10px;
-  font-size: 24px;
-  color: #333;
+h3 {
+    margin: 0;
+    color: #333;
 }
 
-.modal-content p {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #555;
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.modal-content button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.modal-buttons .p-button {
+    padding: 0.5rem 1rem;
 }
 
-.modal-content button:hover {
-  background-color: #0056b3;
+.p-button-primary {
+    background-color: #007ad9;
+    border: none;
+    color: #fff;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.p-button-secondary {
+    background-color: #f0f0f0;
+    border: none;
+    color: #333;
+}
+
+.p-button-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.p-button-primary:hover {
+    background-color: #005bb5;
+}
+
+.modal-overlay .modal {
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay .modal:hover {
+    transform: scale(1.02);
 }
   </style>
   

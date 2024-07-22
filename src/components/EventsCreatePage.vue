@@ -41,7 +41,9 @@
                                     <Dropdown id="eventStatus" v-model="selectedStatus" :options="eventStatuses"
                                         optionLabel="label" placeholder="Select a status" />
                                 </div>
-                                <MapComponent @update-location="updateLocation" />
+                                <div class="p-field pb-3">
+                                    <MapComponent @update-location="updateLocation" />
+                                </div>
                             </div>
                         </div>
                         <div class="col-12">
@@ -130,11 +132,12 @@ export default {
         };
 
         const updateLocation = (location) => {
-  event.value.location.latitud = location.lat;
-  event.value.location.longitud = location.lng;
-    event.value.location.address = location.address;
+            console.log('Location:', location);
+            event.value.location.latitud = location.lat;
+            event.value.location.longitud = location.lng;
+            event.value.location.address = location.address;
 
-};
+        };
         const fetchAllGuests = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/guests');

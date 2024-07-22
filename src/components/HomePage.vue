@@ -4,17 +4,27 @@
             <section class="events">
                 <h2 class="p-text-center">Próximos Eventos</h2>
                 <div class="event-list">
-                    <Card v-for="event in events" :key="event.id" style="width: 300px; box-shadow: 0 2px 4px rgb(0, 0, 0, 0.6);" @click="openModal(event.id)">
-                        <template #title>
-                            <h3>{{ event.name }}</h3>
-                        </template>
-                        <template #subtitle>
-                            <p>{{ formatDate(event.datetime) }}</p>
-                        </template>
-                        <template #content>
-                            <p>{{ event.description }}</p>
-                        </template>
-                    </Card>
+                    <div class="p-col-12 p-md-6 p-lg-4" v-for="event in events" :key="event.id">
+                        <Card class="event-card" @click="openModal(event.id)">
+                            <template #title>
+                                <div class="card-header">
+                                    <i class="pi pi-calendar p-mr-2"></i>
+                                    <h3>{{ event.name }}</h3>
+                                </div>
+                            </template>
+                            <template #subtitle>
+                                <p><i class="pi pi-clock p-mr-2"></i>{{ formatDate(event.datetime) }}</p>
+                            </template>
+                            <template #content>
+                                <p><i class="pi pi-info-circle p-mr-2"></i>{{ event.description }}</p>
+                            </template>
+                            <template #footer>
+                                <button class="p-button p-component p-button-text p-button-secondary">
+                                    <i class="pi pi-calendar-plus"></i> Añadir al Calendario
+                                </button>
+                            </template>
+                        </Card>
+                    </div>
                 </div>
             </section>
         </main>
@@ -110,5 +120,55 @@ export default {
 
 .events {
     margin-bottom: 40px;
+}
+
+.event-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card:hover {
+    transform: scale(1.05);
+}
+
+.card-subtitle {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-subtitle h3 {
+    margin: 0;
+}
+
+.card-content {
+    flex: 1;
+    padding: 1rem;
+}
+.card-footer {
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+.card-subtitle i {
+    font-size: 1.5rem;
+}
+
+.p-text-center {
+    text-align: center;
+}
+
+.p-mr-2 {
+    margin-right: 0.5rem;
 }
 </style>

@@ -11,6 +11,7 @@ import LoginPage from './components/LoginPage.vue';
 import RegisterPage from './components/RegisterPage.vue';
 import CreateEvent from './components/EventsCreatePage.vue';
 import EventsTable from './components/EventsTable.vue';
+import Vue3Geolocation from 'vue3-geolocation'
 
 const routes = [
   { path: '/', component: HomePage },
@@ -28,5 +29,5 @@ const router = createRouter({
 const app = createApp(App);
 app.use(PrimeVue);
 app.use(router); 
-
+app.use(Vue3Geolocation)
 app.mount('#app');
