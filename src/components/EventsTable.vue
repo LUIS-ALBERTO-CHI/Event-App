@@ -141,6 +141,7 @@ const formatDate = (isoString) => {
 
 const onRowEditSave = async (event) => {
     let { newData, index } = event;
+    newData.cost = parseFloat(newData.cost);
     events.value[index] = newData;
     showMessage.value = false;
 
