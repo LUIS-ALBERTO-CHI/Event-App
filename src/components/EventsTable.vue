@@ -1,7 +1,10 @@
 <template>
+    <Message v-if="showMessage" :severity="messageSeverity">{{ messageText }}</Message>
     <Card>
+        
         <template #title>Eventos</template>
         <template #content>
+            
             <DataTable v-model:editingRows="editingRows" :value="events" paginator :rows="10"
                 :rowsPerPageOptions="[5, 10, 20, 50]" editMode="row" dataKey="id" @row-edit-save="onRowEditSave" :pt="{
                     table: { style: 'min-width: 50rem' },
@@ -50,7 +53,13 @@
                     </template>
                 </Column>
                 <Column :rowEditor="true" style="width: 10%; min-width: 8rem" bodyStyle="text-align:center"></Column>
+                <Column style="width: 10%">
+                    <template #body="slotProps">
+                        <Button  icon="pi pi-trash" class="p-button-danger" @click="onDelete(slotProps.data)" />
+                    </template>
+                </Column>
             </DataTable>
+
         </template>
     </Card>
 </template>
@@ -64,11 +73,17 @@ import axios from 'axios';
 import Calendar from 'primevue/calendar';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Message from 'primevue/message';
+
 
 
 const events = ref([]);
 const editingRows = ref([]);
 const guests = ref([]);
+const showMessage = ref(false);
+const messageText = ref('');
+const messageSeverity = ref('info');
 const eventStatuses = ref([
     { label: 'Active', value: 'active' },
     { label: 'Inactive', value: 'endended' },
@@ -124,9 +139,50 @@ const formatDate = (isoString) => {
     }).format(date);
 };
 
-const onRowEditSave = (event) => {
+const onRowEditSave = async (event) => {
     let { newData, index } = event;
     events.value[index] = newData;
+    showMessage.value = false;
+
+    try {
+        console.log(newData);
+        await axios.put(`http://localhost:3000/api/events/${newData.id}`,newData);
+        showMessage.value = true;
+        messageSeverity.value = 'success';
+        messageText.value = `Evento con el id: ${newData.id} actualizado`
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+
+            showMessage.value = true;
+            messageSeverity.value = 'error';
+            messageText.value = `${error.response.data.errors[0].msg}`;
+        } else {
+            messageText.value = 'Oops! Algo salio mal, Intentelo mas tarde';
+            showMessage.value = true;
+            messageSeverity.value = 'error';
+        }
+    }
+};
+const onDelete = async (rowData) => {
+    showMessage.value = false;
+    try {
+        await axios.delete(`http://localhost:3000/api/events/${rowData.id}`);
+        events.value = events.value.filter(event => event.id !== rowData.id);
+        showMessage.value = true;
+        messageSeverity.value = 'success';
+        messageText.value = 'Evento Eliminado'
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            console.log(error.response.data.errors[0].msg);
+            showMessage.value = true;
+            messageSeverity.value = 'error';
+            messageText.value = `${error.response.data.errors[0].msg}`;
+        } else {
+            messageText.value = 'Oops! Algo salio mal, Intentelo mas tarde';
+            showMessage.value = true;
+            messageSeverity.value = 'error';
+        }
+    }
 };
 
 onMounted(() => {

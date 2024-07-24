@@ -5,13 +5,17 @@
                 <router-link to="/">
                     <img src="../assets/logo.png" alt="" style="width: 50px;"/>
                 </router-link>
-                <router-link to="/createEvent" v-if="isAdmin">
-                    <Button label="Crear evento" text plain/>
+                <router-link to="/">
+                    <Button label="Inicio" text plain/>
                 </router-link>
+                
                 <router-link to="/eventSchedule">
                     <Button label="Calendario" text plain />
                 </router-link>
-                <router-link to="/events">
+                <router-link to="/createEvent" v-if="isAdmin">
+                    <Button label="Crear evento" text plain/>
+                </router-link>
+                <router-link to="/events" v-if="isAdmin">
                     <Button label="Eventos" text plain />
                 </router-link>
             </div>

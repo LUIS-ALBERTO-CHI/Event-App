@@ -15,6 +15,7 @@ import Vue3Geolocation from 'vue3-geolocation'
 import EventSchedule from './components/EventSchedule.vue';
 
 
+
 const routes = [
   { path: '/', component: HomePage },
   { path: '/register', component: RegisterPage },
