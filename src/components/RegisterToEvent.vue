@@ -79,11 +79,12 @@
             eventId: this.eventId
           });
           console.log(response)
-          alert('Registrado con éxito');
+           this.$emit('registration-success');
           this.close();
         } catch (error) {
             if(error.response && error.response.status === 400) {
-                alert('No se puede volver a registrar')
+              this.$emit('registration-error');
+                this.close();
             } else {
                 console.error('Error registrándose al evento:', error);
             }

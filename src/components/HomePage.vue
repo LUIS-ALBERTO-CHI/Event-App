@@ -1,4 +1,5 @@
 <template>
+      <Message style="position: fixed;" v-if="message" :severity="message.severity">{{  message.text }}</Message>
     <div class="home-page">
         <main class="main-content">
             <section class="events">
@@ -29,26 +30,30 @@
             </section>
         </main>
 
-        <RegisterToEvent :show="showModal" :eventId="selectedEventId" @close="showModal = false"/>
+        <RegisterToEvent :show="showModal" :eventId="selectedEventId" @close="showModal = false" @registration-success="showSuccessMessage" @registration-error="showErrorMessage"/>
+        
+      
     </div>
 </template>
 
 <script>
-
 import Card from 'primevue/card';
-import axios from 'axios'
+import axios from 'axios';
 import RegisterToEvent from './RegisterToEvent.vue';
+import Message from 'primevue/message';
 
 export default {
     components: {
         Card,
-        RegisterToEvent
+        RegisterToEvent,
+        Message
     },
     data() {
         return {
             events: [],
             showModal: false,
-            selectedEventId: null
+            selectedEventId: null,
+            message: null
         };
     },
     created() {
@@ -67,39 +72,53 @@ export default {
             }).format(date);
         },
         async fetchAllEvents() {
-        try {
-            let page = 1;
-            const limit = 100;
-            const allEvents = [];
-            let totalPages = 1;
+            try {
+                let page = 1;
+                const limit = 100;
+                const allEvents = [];
+                let totalPages = 1;
 
-            do {
-                const response = await axios.get('http://localhost:3000/api/events', {
-                    params: { page: page, limit: limit }
-                });
+                do {
+                    const response = await axios.get('http://localhost:3000/api/events', {
+                        params: { page: page, limit: limit }
+                    });
 
-                const { events, totalPages: newTotalPages } = response.data;
+                    const { events, totalPages: newTotalPages } = response.data;
 
-                allEvents.push(...events);
+                    allEvents.push(...events);
 
-                totalPages = newTotalPages;
+                    totalPages = newTotalPages;
 
-                page++;
-            } while (page <= totalPages);
+                    page++;
+                } while (page <= totalPages);
 
-            this.events = allEvents;
-        } catch (error) {
-            console.error('Error fetching all events:', error);
+                this.events = allEvents;
+            } catch (error) {
+                console.error('Error fetching all events:', error);
+            }
+        },
+        openModal(eventId) {
+            this.selectedEventId = eventId;
+            this.showModal = true;
+        },
+        showSuccessMessage() {
+            this.message = {
+                severity: 'success',
+                text: 'Registrado con éxito'
+            };
+            setTimeout(() => this.message = null, 3000);
+        },
+        showErrorMessage() {
+            this.message = {
+                severity: 'error',
+                text: 'Error, Usted ya ha sido registrado en este evento'
+            };
+            setTimeout(() => this.message = null, 3000);
         }
-    },
-    openModal(eventId) {
-        this.selectedEventId = eventId;
-        this.showModal = true;
     }
-    }
-    
 };
 </script>
+
 
 <style>
 .home-page {
