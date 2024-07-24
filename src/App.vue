@@ -87,10 +87,6 @@ export default {
   opacity: 0.5;
 }
 
-#app::before {
-  width: 200px;
-  height: 200px;
-}
 
 #app::after {
   width: 300px;
