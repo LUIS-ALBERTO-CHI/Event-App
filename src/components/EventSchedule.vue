@@ -17,6 +17,12 @@
                 <div class="location mb-3">
                     <i class="fas fa-map-marker-alt"></i> {{ event.location.address }}
                 </div>
+                <div id="map" class="map">
+                    <l-map :zoom="zoom" :center="[event.location.latitud, event.location.longitud]" style="height: 300px; width: 100%;">
+                        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                        <l-marker :lat-lng="[event.location.latitud, event.location.longitud]"></l-marker>
+                    </l-map>
+                </div>
                 <div class="cost">
                     <i class="fas fa-dollar-sign"></i> {{ event.cost }}
                 </div>
@@ -31,12 +37,22 @@
 
 <script>
 import axios from 'axios'
+import { LMap, LTileLayer, LMarker } from 'vue3-leaflet';
+import 'leaflet/dist/leaflet.css'
 
 export default {
+    components: {
+        LMap,
+        LTileLayer,
+        LMarker
+    },
     data() {
         return {
             selectedDay: 'Lunes',
-            events: []
+            events: [],
+            zoom: 13,
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         };
     },
     created() {
