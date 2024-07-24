@@ -5,7 +5,7 @@
                 <template #header>
                     <img alt="user header" src="../assets/logo.png" style="width: 150px;">
                 </template>
-                <template #title>Crear envento</template>
+                <template #title>Crear evento</template>
                 <template #content>
                     <form @submit.prevent="createEvent" class="formgrid grid">
                         <div class="col-12 md:col-6">
@@ -13,24 +13,27 @@
                                 <div class="p-field pb-3">
                                     <label for="name" class="form-label">Nombre del evento</label>
                                     <InputText id="name" v-model="event.name" />
+                                    <p v-if="errors.name" class="error-message">{{ errors.name }}</p>
                                 </div>
                                 <div class="p-field pb-3">
                                     <label for="datetime" class="form-label">Fecha</label>
-                                    <Calendar id="datetime" v-model="event.datetime" hourFormat="12" showTime
-                                        showSeconds showIcon iconDisplay="input" />
+                                    <Calendar id="datetime" v-model="event.datetime" hourFormat="12" showTime showSeconds showIcon iconDisplay="input" />
+                                    <p v-if="errors.datetime" class="error-message">{{ errors.datetime }}</p>
                                 </div>
                                 <div class="p-field pb-3">
                                     <label for="description" class="form-label">Descripción</label>
                                     <InputText id="description" v-model="event.description" />
+                                    <p v-if="errors.description" class="error-message">{{ errors.description }}</p>
                                 </div>
                                 <div class="p-field pb-3">
                                     <label for="guestId" class="form-label">Invitado</label>
-                                    <Dropdown id="guestId" v-model="selectedGuest" :options="guests" optionLabel="name"
-                                        placeholder="Selecciona un invitado" />
+                                    <Dropdown id="guestId" v-model="selectedGuest" :options="guests" optionLabel="name" placeholder="Selecciona un invitado" />
+                                    <p v-if="errors.guestId" class="error-message">{{ errors.guestId }}</p>
                                 </div>
                                 <div class="p-field pb-3">
                                     <label for="cost" class="form-label">Costo</label>
                                     <InputText id="cost" v-model="event.cost" />
+                                    <p v-if="errors.cost" class="error-message">{{ errors.cost }}</p>
                                 </div>
                             </div>
                         </div>
@@ -38,15 +41,17 @@
                             <div class="p-fluid">
                                 <div class="p-field pb-3">
                                     <label for="eventStatus" class="form-label">Estado del evento</label>
-                                    <Dropdown id="eventStatus" v-model="selectedStatus" :options="eventStatuses"
-                                        optionLabel="label" placeholder="Select a status" />
+                                    <Dropdown id="eventStatus" v-model="selectedStatus" :options="eventStatuses" optionLabel="label" placeholder="Select a status" />
+                                    <p v-if="errors.eventStatus" class="error-message">{{ errors.eventStatus }}</p>
                                 </div>
                                 <div class="p-field pb-3">
                                     <MapComponent @update-location="updateLocation" />
+                                    <p v-if="errors.location" class="error-message">{{ errors.location }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
+                            <Message v-if="showMessage" :severity="messageSeverity">{{ messageText }}</Message>
                             <Button label="Submit" icon="pi pi-check" type="submit" class="submit-button" />
                         </div>
                     </form>
@@ -66,6 +71,7 @@ import Button from 'primevue/button';
 import Calendar from 'primevue/calendar';
 import Dropdown from 'primevue/dropdown';
 import MapComponent from './MapComponent.vue';
+import Message from 'primevue/message';
 
 export default {
     components: {
@@ -75,13 +81,14 @@ export default {
         Calendar,
         Dropdown,
         MapComponent,
+        Message,
     },
     setup() {
-        onMounted(() => {
-            fetchAllGuests();
-        });
+        const router = useRouter();
+        const showMessage = ref(false);
+        const messageText = ref('');
+        const messageSeverity = ref('info');
         const guests = ref([]);
-
         const event = ref({
             name: '',
             datetime: null,
@@ -95,22 +102,38 @@ export default {
                 address: '',
             },
         });
-
         const selectedGuest = ref(null);
-
         const eventStatuses = ref([
             { label: 'Active', value: 'active' },
             { label: 'Inactive', value: 'endended' },
             { label: 'Canceled', value: 'cancelled' },
         ]);
         const selectedStatus = ref(null);
+        const errors = ref({});
 
-        const router = useRouter();
+        const validateForm = () => {
+            const validationErrors = {};
+            if (!event.value.name) validationErrors.name = 'El nombre del evento es requerido.';
+            if (!event.value.datetime) validationErrors.datetime = 'La fecha es requerida.';
+            if (!event.value.description) validationErrors.description = 'La descripción es requerida.';
+            if (!selectedGuest.value) validationErrors.guestId = 'El invitado es requerido.';
+            if (!event.value.cost) validationErrors.cost = 'El costo es requerido.';
+            if (!selectedStatus.value) validationErrors.eventStatus = 'El estado del evento es requerido.';
+            
+            errors.value = validationErrors;
+            return Object.keys(validationErrors).length === 0;
+        };
 
         const createEvent = async () => {
-            try {
-                console.log('Selected Guest:', selectedGuest);
+            showMessage.value = false;
+            if (!validateForm()) {
+                showMessage.value = true;
+                messageSeverity.value = 'error';
+                messageText.value = 'Por favor, complete todos los campos requeridos.';
+                return;
+            }
 
+            try {
                 const eventData = {
                     ...event.value,
                     datetime: event.value.datetime.toISOString(),
@@ -127,17 +150,26 @@ export default {
                 console.log(response.data);
                 router.push('/');
             } catch (error) {
-                console.error('Error creating event:', error);
+                if (error.response && error.response.status === 400) {
+                    console.log(error.response.data.errors[0].msg);
+                    showMessage.value = true;
+                    messageSeverity.value = 'error';
+                    messageText.value = `${error.response.data.errors[0].msg}`;
+                } else {
+                    console.error('Error registrándose al evento:', error);
+                    messageText.value = 'Oops! Algo salio mal, Intentelo mas tarde';
+                    showMessage.value = true;
+                    messageSeverity.value = 'error';
+                }
             }
         };
 
         const updateLocation = (location) => {
-            console.log('Location:', location);
             event.value.location.latitud = location.lat;
             event.value.location.longitud = location.lng;
             event.value.location.address = location.address;
-
         };
+
         const fetchAllGuests = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/guests');
@@ -148,6 +180,10 @@ export default {
             }
         };
 
+        onMounted(() => {
+            fetchAllGuests();
+        });
+
         return {
             event,
             eventStatuses,
@@ -156,7 +192,11 @@ export default {
             fetchAllGuests,
             guests,
             selectedGuest,
-            updateLocation
+            updateLocation,
+            showMessage,
+            messageText,
+            messageSeverity,
+            errors,
         };
     },
 };
@@ -201,6 +241,11 @@ export default {
 .form-input:focus {
     border-color: #007aff;
     outline: none;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
 }
 
 .submit-button {
